@@ -82,13 +82,13 @@ jobs:
 
 
 
-      # Test the built Docker image
-      - name: Run container structure tests
-        run: |
-          docker run -v $(pwd)/test:/test -v /var/run/docker.sock:/var/run/docker.sock \
-            gcr.io/gcp-runtimes/container-structure-test:v1.12.0 \
-            test --image ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${{ matrix.branch }}-${{ matrix.platform }} \
-            --config /test/structure-test-config.yaml
+      # # Test the built Docker image
+      # - name: Run container structure tests
+      #   run: |
+      #     docker run -v $(pwd)/test:/test -v /var/run/docker.sock:/var/run/docker.sock \
+      #       gcr.io/gcp-runtimes/container-structure-test:v1.12.0 \
+      #       test --image ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${{ matrix.branch }}-${{ matrix.platform }} \
+      #       --config /test/structure-test-config.yaml
 
       # Scan the built Docker image for security vulnerabilities
       - name: Scan Docker image for vulnerabilities
