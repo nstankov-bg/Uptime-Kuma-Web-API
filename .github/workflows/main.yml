@@ -93,17 +93,15 @@ jobs:
       # Scan the built Docker image for security vulnerabilities
       - name: Scan Docker image for vulnerabilities
         run: |
-          docker pull ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${
-      # Scan the built Docker image for security vulnerabilities
-      - name: Scan Docker image for vulnerabilities
-        run: |
-          docker pull ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${{ matrix.branch }}-${{ matrix.platform }}
+          IMAGE_TAG=${{ matrix.branch }}-${{ env.PLATFORM_TAG }}
+          docker pull ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${IMAGE_TAG}
           docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
             aquasec/trivy:latest \
             --exit-code 1 \
             --severity CRITICAL,HIGH \
             --ignore-unfixed \
-            ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${{ matrix.branch }}-${{ matrix.platform }}
+            ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${IMAGE_TAG}
+
             
       # # Create an issue if the build fails
       # - name: Create issue if build fails
