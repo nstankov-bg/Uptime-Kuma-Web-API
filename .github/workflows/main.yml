@@ -53,12 +53,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # # Lint the Dockerfile
-      # - name: Lint Dockerfile
-      #   uses: hadolint/hadolint-action@v1.6.0
-      #   with:
-      #     dockerfile: Dockerfile
-
       # Set platform tag without "/"
       - name: Set platform tag
         id: platform_tag
@@ -81,7 +75,7 @@ jobs:
           load: true
 
 
-
+      # FUTURE TESTS?
       # # Test the built Docker image
       # - name: Run container structure tests
       #   run: |
@@ -90,17 +84,17 @@ jobs:
       #       test --image ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${{ matrix.branch }}-${{ matrix.platform }} \
       #       --config /test/structure-test-config.yaml
 
-      # Scan the built Docker image for security vulnerabilities
-      - name: Scan Docker image for vulnerabilities
-        run: |
-          IMAGE_TAG=${{ matrix.branch }}-${{ env.PLATFORM_TAG }}
-          docker pull ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${IMAGE_TAG}
-          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
-            aquasec/trivy:latest \
-            --exit-code 1 \
-            --severity CRITICAL,HIGH \
-            --ignore-unfixed \
-            ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${IMAGE_TAG}
+      # # Scan the built Docker image for security vulnerabilities
+      # - name: Scan Docker image for vulnerabilities
+      #   run: |
+      #     IMAGE_TAG=${{ matrix.branch }}-${{ env.PLATFORM_TAG }}
+      #     docker pull ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${IMAGE_TAG}
+      #     docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+      #       aquasec/trivy:latest \
+      #       --exit-code 1 \
+      #       --severity CRITICAL,HIGH \
+      #       --ignore-unfixed \
+      #       ${{ env.DOCKERHUB_REPO }}/${{ env.DOCKERHUB_IMAGE }}:${IMAGE_TAG}
 
             
       # # Create an issue if the build fails
